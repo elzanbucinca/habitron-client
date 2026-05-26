@@ -1,17 +1,21 @@
 """
 Habitron – Interactive Streamlit Dashboard
 
-Provides an interactive web interface to visualize habit data, analysis results,
-anomalies, and AI-generated insights.
+Provides an interactive web interface to visualize habit data,
+AI-generated insights, and habit recommendations.
 
-The dashboard is organized into 7 pages:
-1. AI Insights – Generated insights and recommendations
-2. Data Overview – Raw data and statistics
-3. Correlation Analysis – Habit-productivity relationships
-4. Trends & Patterns – Time-series visualization
-5. Model & Predictions – ML model performance
-6. Anomalies – Unusual day detection
-7. Log Habits – Manual habit entry form
+The dashboard is organized into 3 sections:
+
+DATA:
+- Log Habits – Manual habit entry form
+- View History – Raw data and statistics
+
+INSIGHTS:
+- Weekly Summary – AI-generated weekly reflection
+- What's Working – Top habits and recommendations
+
+AI ASSISTANT:
+- Unusual Days – Anomaly detection (more features in Phase 4)
 """
 
 import streamlit as st
@@ -19,14 +23,12 @@ import pandas as pd
 
 from src.services.api_client import client
 from src.ui.pages import (
-    analysis,
     anomalies,
-    data,
+    history,
     log_habits,
-    insights,
     login,
-    model,
-    trends,
+    weekly_summary,
+    whats_working,
 )
 from src.ui.components.sidebar import render_sidebar
 
@@ -162,22 +164,21 @@ def main():
     # Render selected page
     if page == 'Log Habits':
         log_habits.render(user_key)
+    elif page == 'Weekly Summary':
+        weekly_summary.render(user_key)
+    elif page == "What's Working":
+        correlations = None
+        if analysis_data:
+            correlations = analysis_data.get('correlations')
+        whats_working.render(user_key, correlations)
     elif analysis_data is None:
         st.info(
             'No habit data found for your account. '
             'Add records via the API to get started.'
         )
-    elif page == 'AI Insights':
-        insights.render(analysis_data)
-    elif page == 'Data Overview':
-        data.render(analysis_data, date_range)
-    elif page == 'Correlation Analysis':
-        analysis.render(analysis_data)
-    elif page == 'Trends & Patterns':
-        trends.render(analysis_data, selected_habits)
-    elif page == 'Model & Predictions':
-        model.render(analysis_data)
-    elif page == 'Anomalies':
+    elif page == 'View History':
+        history.render(analysis_data, date_range)
+    elif page == 'Unusual Days':
         anomalies.render(analysis_data, anomaly_threshold)
 
 

@@ -1,5 +1,5 @@
 """
-Data Overview page - Display raw data and statistics.
+View History page - Display raw data and statistics.
 
 Shows:
 - All habit records in tabular format
@@ -13,13 +13,13 @@ from src.services.api_client import client
 
 def render(data, date_range):
     """
-    Render the data overview page.
+    Render the view history page.
 
     Args:
         data: Dictionary with pre-loaded analysis data.
         date_range: Tuple of (start_date, end_date).
     """
-    st.header(':material/table_chart: Data Overview')
+    st.header('📋 View History')
 
     if data is None:
         st.warning('No data available.')

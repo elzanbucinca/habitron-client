@@ -285,6 +285,77 @@ class HabitronAPIClient:
         }
         return self._make_request('POST', '/api/database/insert', payload)
 
+    def ask_question(self, user_key, question):
+        """
+        Ask an AI question about habit data.
+
+        Args:
+            user_key (str): GUID of the user.
+            question (str): Natural language question.
+
+        Returns:
+            dict: API response with 'answer' and 'confidence'.
+        """
+        endpoint = f'/api/ai/ask?user_key={user_key}'
+        return self._make_request('POST', endpoint, {'question': question})
+
+    def get_weekly_summary(self, user_key):
+        """
+        Get AI-generated weekly summary.
+
+        Args:
+            user_key (str): GUID of the user.
+
+        Returns:
+            dict: API response with 'summary' and 'confidence'.
+        """
+        endpoint = f'/api/ai/weekly-summary?user_key={user_key}'
+        return self._make_request('GET', endpoint)
+
+    def get_recommendations(self, user_key):
+        """
+        Get AI-generated habit recommendations.
+
+        Args:
+            user_key (str): GUID of the user.
+
+        Returns:
+            dict: API response with 'recommendations' and 'confidence'.
+        """
+        endpoint = f'/api/ai/recommendations?user_key={user_key}'
+        return self._make_request('GET', endpoint)
+
+    def predict_tomorrow(self, user_key):
+        """
+        Predict tomorrow's productivity.
+
+        Args:
+            user_key (str): GUID of the user.
+
+        Returns:
+            dict: API response with prediction, probability,
+                  confidence, and explanation.
+        """
+        endpoint = f'/api/predictions/tomorrow?user_key={user_key}'
+        return self._make_request('GET', endpoint)
+
+    def what_if_prediction(self, user_key, habits):
+        """
+        Predict outcome for hypothetical habit values.
+
+        Args:
+            user_key (str): GUID of the user.
+            habits (dict): Hypothetical habit values with keys:
+                           sleep_hours, focus_hours, exercise_minutes,
+                           mood, screen_time_hours, diet_quality.
+
+        Returns:
+            dict: API response with prediction, probability,
+                  confidence, and explanation.
+        """
+        endpoint = f'/api/predictions/what-if?user_key={user_key}'
+        return self._make_request('POST', endpoint, habits)
+
     def health_check(self):
         """Check if API is running."""
         return self._make_request('GET', '/api/health')
