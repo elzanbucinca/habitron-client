@@ -24,9 +24,11 @@ import pandas as pd
 from src.services.api_client import client
 from src.ui.pages import (
     anomalies,
+    ask_question,
     history,
     log_habits,
     login,
+    predictions,
     weekly_summary,
     whats_working,
 )
@@ -178,6 +180,10 @@ def main():
         )
     elif page == 'View History':
         history.render(analysis_data, date_range)
+    elif page == 'Ask a Question':
+        ask_question.render(user_key)
+    elif page == 'Predictions':
+        predictions.render(user_key)
     elif page == 'Unusual Days':
         anomalies.render(analysis_data, anomaly_threshold)
 

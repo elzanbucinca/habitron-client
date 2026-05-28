@@ -119,6 +119,8 @@ def render_sidebar(analysis_data=None):
         '<p class="menu-section-header">AI Assistant</p>',
         unsafe_allow_html=True
     )
+    _render_menu_item('Ask a Question')
+    _render_menu_item('Predictions')
     _render_menu_item('Unusual Days')
 
     page = st.session_state['selected_page']
