@@ -22,7 +22,7 @@ def render(user_key):
     Args:
         user_key (str): GUID of the logged-in user.
     """
-    st.header('📅 Weekly Summary')
+    st.header(':material/calendar_today: Weekly Summary')
 
     st.markdown(
         'Here\'s your personalized reflection on the past week, '

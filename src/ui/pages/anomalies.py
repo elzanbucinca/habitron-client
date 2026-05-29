@@ -16,13 +16,9 @@ from src.ui.components.insight_card import render_insight_card
 DEFAULT_THRESHOLD = 2.5
 
 
-def render(data, threshold=None):
+def render():
     """
     Render the unusual days page.
-
-    Args:
-        data: Dictionary with pre-loaded analysis data (unused).
-        threshold: Anomaly detection threshold (ignored, uses default).
     """
     st.header('Unusual Days')
 

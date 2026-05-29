@@ -23,7 +23,7 @@ def render(user_key, correlations=None):
         user_key (str): GUID of the logged-in user.
         correlations (dict): Optional pre-loaded correlation data.
     """
-    st.header("✨ What's Working")
+    st.header(':material/emoji_objects: What\'s Working')
 
     st.markdown(
         'Discover which habits help you the most and get '
@@ -47,7 +47,7 @@ def _render_top_habits(user_key, correlations):
         user_key (str): GUID of the logged-in user.
         correlations (dict): Correlation data from API.
     """
-    st.subheader('🏆 Your Top Habits')
+    st.subheader('Your Top Habits')
 
     try:
         # Load correlations if not provided
@@ -125,7 +125,7 @@ def _render_recommendations(user_key):
     Args:
         user_key (str): GUID of the logged-in user.
     """
-    st.subheader('💡 Quick Wins')
+    st.subheader('Quick Wins')
 
     st.markdown(
         'Personalized suggestions to boost your productivity:'

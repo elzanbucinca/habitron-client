@@ -97,25 +97,11 @@ def load_analysis_data(user_key):
         trends_response = client.get_trends(user_key)
         trends_data = trends_response['trends']
 
-        # Train model and get metrics
-        model_response = client.train_model(user_key)
-        metrics = model_response['metrics']
-        coefficients = model_response['coefficients']
-
-        # Load insights
-        insights_response = client.get_all_insights(user_key)
-        insights_list = insights_response.get('insights', [])
-        total_insights = insights_response.get('total_insights', 0)
-
         return {
             'dataframe': dataframe,
             'statistics': statistics,
             'correlations': correlations,
             'trends': trends_data,
-            'model_metrics': metrics,
-            'coefficients': coefficients,
-            'insights': insights_list,
-            'total_insights': total_insights
         }
     except Exception as error:
         st.error(f'Error loading data from API: {error}')
@@ -159,9 +145,6 @@ def main():
     sidebar_selections = render_sidebar(analysis_data)
 
     page = sidebar_selections['page']
-    date_range = sidebar_selections['date_range']
-    selected_habits = sidebar_selections['selected_habits']
-    anomaly_threshold = sidebar_selections['anomaly_threshold']
 
     # Render selected page
     if page == 'Log Habits':
@@ -173,19 +156,19 @@ def main():
         if analysis_data:
             correlations = analysis_data.get('correlations')
         whats_working.render(user_key, correlations)
+    elif page == 'Ask a Question':
+        ask_question.render(user_key)
+    elif page == 'Predictions':
+        predictions.render(user_key)
+    elif page == 'Unusual Days':
+        anomalies.render()
     elif analysis_data is None:
         st.info(
             'No habit data found for your account. '
             'Add records via the API to get started.'
         )
     elif page == 'View History':
-        history.render(analysis_data, date_range)
-    elif page == 'Ask a Question':
-        ask_question.render(user_key)
-    elif page == 'Predictions':
-        predictions.render(user_key)
-    elif page == 'Unusual Days':
-        anomalies.render(analysis_data, anomaly_threshold)
+        history.render(analysis_data)
 
 
 if __name__ == '__main__':

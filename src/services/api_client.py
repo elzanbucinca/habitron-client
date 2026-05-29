@@ -179,19 +179,6 @@ class HabitronAPIClient:
         )
         return self._make_request('GET', endpoint)
 
-    def train_model(self, user_key):
-        """
-        Train linear regression model for a user.
-
-        Args:
-            user_key (str): GUID of the user.
-
-        Returns:
-            dict: API response with model metrics and coefficients.
-        """
-        endpoint = f'/api/model/train?user_key={user_key}'
-        return self._make_request('POST', endpoint)
-
     def detect_anomalies(self, user_key, threshold=2.5):
         """
         Detect anomalies for a user.
@@ -207,19 +194,6 @@ class HabitronAPIClient:
             f'/api/anomaly/detect'
             f'?user_key={user_key}&threshold={threshold}'
         )
-        return self._make_request('GET', endpoint)
-
-    def get_all_insights(self, user_key):
-        """
-        Get all insights for a user.
-
-        Args:
-            user_key (str): GUID of the user.
-
-        Returns:
-            dict: API response with ranked insights.
-        """
-        endpoint = f'/api/insights/all?user_key={user_key}'
         return self._make_request('GET', endpoint)
 
     def get_habit_by_date(self, user_key, date):

@@ -11,45 +11,32 @@ import streamlit as st
 from src.services.api_client import client
 
 
-def render(data, date_range):
+def render(data):
     """
     Render the view history page.
 
     Args:
         data: Dictionary with pre-loaded analysis data.
-        date_range: Tuple of (start_date, end_date).
     """
-    st.header('📋 View History')
+    st.header(':material/table_chart: History')
 
     if data is None:
         st.warning('No data available.')
         return
 
     try:
-        import pandas as pd
-        
         dataframe = data['dataframe']
         statistics = data['statistics']
-
-        start_date, end_date = date_range
-
-        filtered_df = dataframe.loc[
-            (dataframe.index >= pd.Timestamp(start_date)) &
-            (dataframe.index <= pd.Timestamp(end_date))
-        ]
 
         columns_to_hide = ['key', 'user_key']
         columns_to_drop = [
             col for col in columns_to_hide
-            if col in filtered_df.columns
+            if col in dataframe.columns
         ]
-        filtered_df = filtered_df.drop(columns=columns_to_drop)
+        display_df = dataframe.drop(columns=columns_to_drop)
 
-        st.subheader(
-            f'Data from {start_date} to {end_date} '
-            f'({len(filtered_df)} records)'
-        )
-        st.dataframe(filtered_df, use_container_width=True)
+        st.subheader(f'All Records ({len(display_df)} total)')
+        st.dataframe(display_df, use_container_width=True)
 
         st.subheader('Basic Statistics')
         stats_data = []
@@ -63,8 +50,7 @@ def render(data, date_range):
 
         st.dataframe(stats_data, use_container_width=True)
 
-        st.subheader('Data Quality')
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
 
         with col1:
             st.metric('Total Records', len(dataframe))
@@ -76,7 +62,6 @@ def render(data, date_range):
                 f"{dataframe.index[-1].strftime('%Y-%m-%d')}"
             )
 
-        with col3:
-            st.metric('Missing Values', 0)
+
     except Exception as error:
         st.error(f'Error displaying data: {error}')

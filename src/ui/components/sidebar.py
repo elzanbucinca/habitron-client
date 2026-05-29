@@ -85,7 +85,7 @@ def render_sidebar(analysis_data=None):
         analysis_data: Dictionary with pre-loaded analysis data.
 
     Returns:
-        dict: Contains page, date_range, selected_habits, anomaly_threshold.
+        dict: Contains selected page.
     """
     # Inject custom CSS
     st.sidebar.markdown(MENU_CSS, unsafe_allow_html=True)
@@ -125,37 +125,7 @@ def render_sidebar(analysis_data=None):
 
     page = st.session_state['selected_page']
 
-    st.sidebar.markdown('---')
-    st.sidebar.markdown(
-        '<p class="menu-section-header">⚙️ Filter Options</p>',
-        unsafe_allow_html=True
-    )
-
-    date_range = (None, None)
-    selected_habits = []
-    anomaly_threshold = 2.5
-
-    if analysis_data is not None:
-        dataframe = analysis_data['dataframe']
-
-        start_date = st.sidebar.date_input(
-            'Start Date',
-            value=dataframe.index[0].date()
-        )
-
-        end_date = st.sidebar.date_input(
-            'End Date',
-            value=dataframe.index[-1].date()
-        )
-
-        date_range = (start_date, end_date)        
-
-    return {
-        'page': page,
-        'date_range': date_range,
-        'selected_habits': selected_habits,
-        'anomaly_threshold': anomaly_threshold
-    }
+    return {'page': page}
 
 
 def _render_menu_item(label):
